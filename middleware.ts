@@ -26,21 +26,23 @@
 // 사용자에게 보이는 URL에는 아무 영향이 없다.
 import { rewrite } from '@vercel/functions';
 
-// astro.config.mjs의 base 값과 반드시 동일하게 유지한다 (앞뒤 슬래시 없이).
-const BASE_PATH_PREFIX = 'bunnycode';
-
+// Vercel이 matcher를 배포 시 정적으로 분석하므로(코드를 실행하지 않고 AST만
+// 읽는다), template literal은 지원하지 않는다("Unhandled type: TemplateLiteral"
+// 빌드 오류 발생). 반드시 literal string으로 작성한다.
+// astro.config.mjs의 base('/bunnycode/')와 값이 반드시 일치해야 한다.
 export const config = {
-  matcher: [`/${BASE_PATH_PREFIX}/:path*`],
+  matcher: '/bunnycode/:path*',
 };
+
+const PREFIX_PATTERN = /^\/bunnycode(\/|$)/;
 
 export default function middleware(request: Request) {
   const url = new URL(request.url);
-  const prefixPattern = new RegExp(`^/${BASE_PATH_PREFIX}(/|$)`);
 
-  if (!prefixPattern.test(url.pathname)) {
+  if (!PREFIX_PATTERN.test(url.pathname)) {
     return; // 매칭되지 않으면 그대로 통과 (matcher가 이미 걸러주지만 방어적으로 한 번 더 확인)
   }
 
-  url.pathname = url.pathname.replace(prefixPattern, '/') || '/';
+  url.pathname = url.pathname.replace(PREFIX_PATTERN, '/') || '/';
   return rewrite(url);
 }
