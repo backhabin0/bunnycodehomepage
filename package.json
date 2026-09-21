@@ -1,0 +1,19 @@
+{
+  "name": "bunnycode",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "node --test src/lib/*.test.ts"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^11.0.10",
+    "@vercel/functions": "^3.9.8",
+    "astro": "^7.3.3",
+    "resend": "^6.28.1"
+  }
+}

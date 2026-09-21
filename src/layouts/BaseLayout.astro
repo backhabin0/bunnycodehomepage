@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+import ContactModal from '../components/ContactModal.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  /** 이 페이지에서만 필요한 추가 JSON-LD (WebPage, Service, BreadcrumbList, FAQPage 등).
+   *  WebSite/Organization은 아래에서 모든 페이지에 공통으로 자동 포함되므로 여기서 다시 넣지 않는다. */
+  structuredData?: Record<string, unknown>[];
+}
+
+const {
+  title = '가성비 홈페이지 제작 | 버니코드',
+  description = '버니코드는 홈페이지 제작, 랜딩페이지, SEO 랜딩페이지, 백엔드 개발, Flutter 앱 제작까지 필요한 만큼 가성비 좋게 맞춤 제작합니다.',
+  path = '',
+  structuredData = [],
+} = Astro.props;
+
+// site: https://hanapage.co.kr, base: /bunnycode
+// -> canonical: https://hanapage.co.kr/bunnycode/
+const siteOrigin = import.meta.env.SITE ?? 'https://hanapage.co.kr';
+const baseUrl = import.meta.env.BASE_URL; // '/bunnycode/'
+const canonicalURL = new URL(path, `${siteOrigin}${baseUrl}`).href;
+const ogImageURL = new URL(`${baseUrl}assets/hero-bunny.png`, siteOrigin).href;
+
+// TODO: 실제 사업자 정보(주소/대표자/사업자등록번호 등)가 확정되면
+// Organization 항목에 추가한다. 확인되지 않은 정보는 임의로 채우지 않는다.
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: '버니코드',
+  alternateName: 'BunnyCode',
+  url: canonicalURL,
+  inLanguage: 'ko-KR',
+  description,
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: '버니코드',
+  alternateName: 'BunnyCode',
+  url: canonicalURL,
+  logo: new URL(`${baseUrl}assets/logo-bunny.png`, siteOrigin).href,
+  email: 'backhabin1029@gmail.com',
+  // TODO: 사업자 주소, 대표자명, 사업자등록번호 등은 확인 후 추가
+};
+
+const jsonLdBlocks = [websiteJsonLd, organizationJsonLd, ...structuredData];
+---
+
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#f13f7a" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="버니코드" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={ogImageURL} />
+  <meta property="og:locale" content="ko_KR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageURL} />
+
+  <!-- 웹폰트: preconnect 후 stylesheet로 로드해 렌더 블로킹을 최소화 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap"
+  />
+
+  {jsonLdBlocks.map((block) => (
+    <script type="application/ld+json" set:html={JSON.stringify(block)} />
+  ))}
+</head>
+<body>
+  <slot />
+  <ContactModal />
+</body>
+</html>

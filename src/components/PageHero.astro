@@ -1,0 +1,50 @@
+---
+// 서비스 상세 페이지(/homepage/, /affordable-homepage/)용 공용 히어로.
+// 메인 페이지 .hero와 동일한 클래스(.hero, .hero-inner, .hero-kicker, .hero-copy,
+// .chips, .hero-actions, .hero-btn, .hero-art)를 재사용해 디자인을 그대로 계승한다.
+// H1은 페이지마다 다르므로 named slot "heading"으로 받는다.
+export interface Props {
+  kicker: string;
+  chips?: string[];
+}
+
+const { kicker, chips = [] } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<section class="hero page-hero section-anchor">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-kicker">{kicker}</p>
+
+      <slot name="heading" />
+
+      <div class="hero-copy">
+        <slot />
+      </div>
+
+      {chips.length > 0 && (
+        <div class="chips">
+          {chips.map((chip) => (
+            <span class="chip">{chip}</span>
+          ))}
+        </div>
+      )}
+
+      <div class="hero-actions">
+        <button type="button" class="hero-btn primary" data-open-contact-modal>⇥&nbsp; 가격 문의하기</button>
+        <a class="hero-btn secondary" href="https://open.kakao.com/o/gfMcjbOi" target="_blank" rel="noopener">◉&nbsp; 카카오톡 상담</a>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <img
+        src={`${base}assets/hero-bunny.png`}
+        width="434"
+        height="276"
+        alt="버니코드 토끼 캐릭터"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,294 @@
+---
+// 사이트 전체에서 재사용하는 단일 문의 모달.
+// BaseLayout에서 페이지당 한 번만 렌더링하고, 모든 "메일 상담" 계열
+// CTA는 <button data-open-contact-modal> 형태로 이 모달을 연다
+// (이벤트 위임 방식이라 트리거 버튼마다 별도 배선이 필요 없다).
+import { ALLOWED_SERVICES } from '../lib/contactValidation';
+---
+
+<div class="bunny-modal-overlay" id="bunny-contact-modal-overlay" hidden>
+  <div
+    class="bunny-modal"
+    id="bunny-contact-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bunny-contact-modal-title"
+  >
+    <div class="bunny-modal-header">
+      <div>
+        <h2 class="bunny-modal-title" id="bunny-contact-modal-title">문의하기 ♡</h2>
+        <p class="bunny-modal-subtitle">아래 항목만 남겨주시면 확인 후 빠르게 연락드릴게요.</p>
+      </div>
+      <button type="button" class="bunny-modal-close" id="bunny-contact-modal-close" aria-label="문의창 닫기">✕</button>
+    </div>
+
+    <form class="bunny-contact-form" id="bunny-contact-form" novalidate>
+      <div class="bunny-form-field">
+        <label for="bunny-contact-name">이름 *</label>
+        <input type="text" id="bunny-contact-name" name="name" autocomplete="name" required maxlength="40" />
+      </div>
+
+      <div class="bunny-form-field">
+        <label for="bunny-contact-service">관심 서비스 *</label>
+        <select id="bunny-contact-service" name="service" required>
+          <option value="" selected disabled>선택해주세요</option>
+          {ALLOWED_SERVICES.map((service) => (
+            <option value={service}>{service}</option>
+          ))}
+        </select>
+      </div>
+
+      <div class="bunny-form-field">
+        <label for="bunny-contact-phone">전화번호 *</label>
+        <input
+          type="tel"
+          id="bunny-contact-phone"
+          name="phone"
+          autocomplete="tel"
+          required
+          maxlength="20"
+          placeholder="010-0000-0000"
+        />
+      </div>
+
+      <div class="bunny-form-field">
+        <label for="bunny-contact-message">문의 내용 <span class="optional">(선택)</span></label>
+        <textarea
+          id="bunny-contact-message"
+          name="message"
+          maxlength="2000"
+          placeholder="필요한 기능이나 참고 사이트, 예산 범위 등을 자유롭게 적어주세요."
+        ></textarea>
+      </div>
+
+      <!--
+        TODO: 운영 전 개인정보 보유기간 / 처리방침 문구 확정 필요.
+        현재는 회사의 공식 개인정보 처리방침이 없으므로, 확인되지 않은
+        보유기간·정책을 임의로 만들지 않고 수집 항목과 목적만 표시한다.
+      -->
+      <p class="bunny-form-privacy-note">
+        수집 항목: 이름, 전화번호, 관심 서비스, (선택) 문의 내용<br />
+        수집 목적: 문의 상담 및 견적 안내
+      </p>
+
+      <div class="bunny-form-consent">
+        <input type="checkbox" id="bunny-contact-consent" name="consent" required />
+        <label for="bunny-contact-consent">[필수] 위 개인정보 수집·이용에 동의합니다.</label>
+      </div>
+
+      <!-- Honeypot: 사람 눈에는 보이지 않고, 스크린리더/키보드 탐색에서도 제외된다.
+           값이 채워져 있으면 봇으로 간주하고 서버에서 조용히 무시한다. -->
+      <div class="bunny-form-honeypot" aria-hidden="true">
+        <label for="bunny-contact-company-website">웹사이트 주소 (입력하지 마세요)</label>
+        <input type="text" id="bunny-contact-company-website" name="companyWebsite" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <input type="hidden" name="formOpenedAt" id="bunny-contact-opened-at" />
+
+      <div class="bunny-form-field">
+        <div class="bunny-form-turnstile" id="bunny-turnstile-container"></div>
+      </div>
+
+      <button type="submit" class="bunny-btn bunny-btn-price bunny-form-submit" id="bunny-contact-submit">
+        문의 보내기
+      </button>
+
+      <p class="bunny-form-status" id="bunny-contact-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+
+<script>
+  const OPEN_SELECTOR = '[data-open-contact-modal]';
+  const DEFAULT_SUBMIT_LABEL = '문의 보내기';
+  const SENDING_LABEL = '전송 중...';
+  const SUCCESS_MESSAGE = '문의가 접수되었습니다. 확인 후 연락드리겠습니다.';
+  const ERROR_MESSAGE = '문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
+  const TURNSTILE_MISSING_MESSAGE = '스팸 방지 인증이 아직 준비되지 않았어요. 잠시 후 다시 시도해주세요.';
+
+  const overlay = document.getElementById('bunny-contact-modal-overlay');
+  const modal = document.getElementById('bunny-contact-modal');
+  const closeButton = document.getElementById('bunny-contact-modal-close');
+  const form = document.getElementById('bunny-contact-form');
+  const statusEl = document.getElementById('bunny-contact-status');
+  const submitButton = document.getElementById('bunny-contact-submit');
+  const firstField = document.getElementById('bunny-contact-name');
+  const openedAtField = document.getElementById('bunny-contact-opened-at');
+  const turnstileContainer = document.getElementById('bunny-turnstile-container');
+
+  if (overlay && modal && form && statusEl && submitButton) {
+    const SUBMIT_ENDPOINT = `${import.meta.env.BASE_URL}api/contact`;
+    const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+
+    let lastFocusedElement = null;
+    let turnstileWidgetId = null;
+    let turnstileScriptPromise = null;
+
+    function loadTurnstileScript() {
+      if (window.turnstile) return Promise.resolve();
+      if (turnstileScriptPromise) return turnstileScriptPromise;
+      turnstileScriptPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('turnstile script failed to load'));
+        document.head.appendChild(script);
+      });
+      return turnstileScriptPromise;
+    }
+
+    async function ensureTurnstileWidget() {
+      if (!TURNSTILE_SITE_KEY || !turnstileContainer) return;
+      if (turnstileWidgetId !== null) return;
+      try {
+        await loadTurnstileScript();
+      } catch {
+        return;
+      }
+      if (window.turnstile && turnstileWidgetId === null) {
+        turnstileWidgetId = window.turnstile.render(turnstileContainer, {
+          sitekey: TURNSTILE_SITE_KEY,
+        });
+      }
+    }
+
+    function resetTurnstile() {
+      if (turnstileWidgetId !== null && window.turnstile) {
+        window.turnstile.reset(turnstileWidgetId);
+      }
+    }
+
+    function getTurnstileToken() {
+      if (turnstileWidgetId !== null && window.turnstile) {
+        return window.turnstile.getResponse(turnstileWidgetId) || '';
+      }
+      return '';
+    }
+
+    function setStatus(message, tone) {
+      statusEl.textContent = message;
+      if (tone) {
+        statusEl.dataset.tone = tone;
+      } else {
+        delete statusEl.dataset.tone;
+      }
+    }
+
+    function getFocusable() {
+      return Array.from(
+        modal.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+    }
+
+    function onKeydown(event) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openModal(trigger) {
+      lastFocusedElement = trigger instanceof HTMLElement ? trigger : document.activeElement;
+      overlay.hidden = false;
+      document.body.classList.add('bunny-modal-open');
+      if (openedAtField) openedAtField.value = String(Date.now());
+      setStatus('', null);
+      ensureTurnstileWidget();
+      window.requestAnimationFrame(() => {
+        firstField?.focus();
+      });
+      document.addEventListener('keydown', onKeydown);
+    }
+
+    function closeModal() {
+      overlay.hidden = true;
+      document.body.classList.remove('bunny-modal-open');
+      document.removeEventListener('keydown', onKeydown);
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+    }
+
+    document.addEventListener('click', (event) => {
+      const trigger = event.target instanceof Element ? event.target.closest(OPEN_SELECTOR) : null;
+      if (trigger) {
+        event.preventDefault();
+        openModal(trigger);
+      }
+    });
+
+    closeButton?.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) closeModal();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const turnstileToken = getTurnstileToken();
+      if (!turnstileToken) {
+        setStatus(TURNSTILE_MISSING_MESSAGE, 'error');
+        return;
+      }
+
+      const formData = new FormData(form);
+      const payload = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        service: formData.get('service'),
+        message: formData.get('message'),
+        consent: formData.get('consent') === 'on',
+        companyWebsite: formData.get('companyWebsite'),
+        formOpenedAt: Number(formData.get('formOpenedAt')) || undefined,
+        turnstileToken,
+        pageUrl: window.location.href,
+      };
+
+      submitButton.disabled = true;
+      submitButton.textContent = SENDING_LABEL;
+      setStatus(SENDING_LABEL, 'pending');
+
+      try {
+        const response = await fetch(SUBMIT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json().catch(() => ({ ok: false }));
+
+        if (response.ok && result && result.ok) {
+          setStatus(SUCCESS_MESSAGE, 'success');
+          form.reset();
+          resetTurnstile();
+        } else {
+          setStatus(ERROR_MESSAGE, 'error');
+          resetTurnstile();
+        }
+      } catch {
+        setStatus(ERROR_MESSAGE, 'error');
+        resetTurnstile();
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = DEFAULT_SUBMIT_LABEL;
+      }
+    });
+  }
+</script>

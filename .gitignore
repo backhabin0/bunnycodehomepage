@@ -1,0 +1,23 @@
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment variables / secrets
+# (실제 키가 들어가는 파일은 전부 무시하고, *.example 템플릿만 커밋한다)
+.env
+.env.*
+!.env.example
+
+# Vercel CLI local project link/build cache (vercel link, vercel dev 등)
+.vercel/
+
+# macOS-specific files
+.DS_Store

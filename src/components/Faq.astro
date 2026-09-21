@@ -1,0 +1,16 @@
+---
+export interface Props {
+  items: { question: string; answer: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="bunny-faq-list">
+  {items.map((item) => (
+    <details class="bunny-faq-item">
+      <summary>{item.question}</summary>
+      <p>{item.answer}</p>
+    </details>
+  ))}
+</div>

@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import Portfolio from '../components/Portfolio.astro';
+import Process from '../components/Process.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+
+const title = '가성비 홈페이지 제작 | 버니코드';
+const description =
+  '버니코드는 소상공인부터 기업까지 홈페이지 제작, SEO 랜딩페이지, 백엔드 개발, Flutter 앱 제작을 필요한 만큼 가성비 좋게 맞춤 제작합니다.';
+
+// 메인 페이지에서 제공하는 서비스 전체를 요약하는 카탈로그.
+// 서비스 상세 페이지(/homepage/, /affordable-homepage/)에는
+// 해당 페이지 하나의 서비스만 다루는 별도 Service JSON-LD를 사용하므로
+// 이 카탈로그와 중복되지 않는다.
+const serviceCatalogJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: '홈페이지 · 랜딩페이지 · 앱 개발',
+  provider: {
+    '@type': 'Organization',
+    name: '버니코드',
+  },
+  areaServed: 'KR',
+  description:
+    '홈페이지 전체 제작, SEO를 고려한 랜딩페이지 제작, 백엔드 개발, Flutter 앱 제작을 프로젝트에 필요한 방식으로 제공합니다.',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: '버니코드 제공 서비스',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: '백엔드 개발',
+          description: '로그인/회원, DB 구축, API 연동, 관리자 기능, 예약/신청, 결제 연동 등 서버 기능 개발.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: '홈페이지 전체 제작',
+          description: '프론트엔드부터 백엔드, 반응형 웹, 관리자 기능까지 포함한 홈페이지 제작.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'SEO 랜딩페이지 제작',
+          description: '검색엔진 노출을 고려한 SEO 기본 구조와 다중 페이지 확장이 가능한 랜딩페이지 제작.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Flutter 앱 제작',
+          description: 'Flutter 기반 Android/iOS 앱 제작. 개인 맞춤 앱부터 회원·예약·커뮤니티 등 비즈니스 앱까지 개발.',
+        },
+      },
+    ],
+  },
+};
+---
+
+<BaseLayout title={title} description={description} path="" structuredData={[serviceCatalogJsonLd]}>
+  <Header />
+  <main>
+    <Hero />
+    <Services />
+    <Portfolio />
+    <Process />
+    <Contact />
+  </main>
+  <Footer />
+</BaseLayout>

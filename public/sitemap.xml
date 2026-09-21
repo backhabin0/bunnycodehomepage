@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  https://hanapage.co.kr/bunnycode/sitemap.xml 로 서비스될 사이트맵.
+  서비스별 SEO 랜딩페이지가 /bunnycode/xxx 형태로 추가될 때마다
+  이 파일에 <url> 항목을 추가한다.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://hanapage.co.kr/bunnycode/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://hanapage.co.kr/bunnycode/homepage/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hanapage.co.kr/bunnycode/affordable-homepage/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

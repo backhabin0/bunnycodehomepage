@@ -1,0 +1,44 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
+<section id="home" class="hero section-anchor">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-kicker">작은 아이디어도 멋진 웹으로</p>
+
+      <h1>
+        홈페이지 · 랜딩페이지 ·<br />
+        앱 개발까지 한 번에!
+      </h1>
+
+      <p class="hero-copy">
+        가성비 좋은 맞춤 제작으로 브랜드에 꼭 맞는 디지털 결과물을<br />
+        만들어드립니다. 간단한 소개형 사이트부터 노출에 좋은<br />
+        랜딩페이지, 앱 개발까지 빠르고 감각적으로 진행합니다.
+      </p>
+
+      <div class="chips">
+        <span class="chip">빠른 상담</span>
+        <span class="chip">가성비</span>
+        <span class="chip">맞춤 제작</span>
+        <span class="chip">빠른 제작</span>
+      </div>
+
+      <div class="hero-actions">
+        <button type="button" class="hero-btn primary" data-open-contact-modal>⇥&nbsp; 가격 문의하기</button>
+        <a class="hero-btn secondary" href="https://open.kakao.com/o/gfMcjbOi" target="_blank" rel="noopener">◉&nbsp; 카카오톡 상담</a>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <img
+        src={`${base}assets/hero-bunny.png`}
+        width="434"
+        height="276"
+        alt="노트북을 사용하는 버니코드 토끼 캐릭터"
+        fetchpriority="high"
+      />
+    </div>
+  </div>
+</section>
