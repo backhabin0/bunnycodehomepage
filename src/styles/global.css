@@ -22,7 +22,7 @@
 html{scroll-behavior:smooth}
 body{
   margin:0;
-  font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;
+  font-family:"Bunny Jalnan","Noto Sans KR",Arial,sans-serif;
   background:var(--bg);
   color:var(--deep);
 }
@@ -301,38 +301,11 @@ textarea{
    - 본문 폭: 1280px
    - 그리드 간격: 15px
    - 본문 텍스트: 25px / 1.6
-   - 한글: KT&G 상상제목 계열
+   - 한글: 여기어때 잘난체 고딕("Bunny Jalnan", BaseLayout.astro @font-face)
    - 영문: Anton
    - 주요 핑크: #f13f7a
    - 연핑크: #fcdce3
 ========================================================= */
-
-@font-face{
-  font-family:"Bunny SangSang";
-  src:
-    local("KT&G SangSangTitle M"),
-    local("KT&G SangSangTitleM"),
-    local("SangSangTitle M"),
-    local("SangSangTitleM"),
-    local("상상제목 M"),
-    local("상상제목");
-  font-weight:400 600;
-  font-style:normal;
-  font-display:swap;
-}
-@font-face{
-  font-family:"Bunny SangSang";
-  src:
-    local("KT&G SangSangTitle B"),
-    local("KT&G SangSangTitleB"),
-    local("SangSangTitle B"),
-    local("SangSangTitleB"),
-    local("상상제목 B"),
-    local("상상제목");
-  font-weight:700 900;
-  font-style:normal;
-  font-display:swap;
-}
 
 :root{
   --imweb-pink:#f13f7a;
@@ -351,7 +324,7 @@ html{
 body{
   background:var(--imweb-soft) !important;
   color:var(--imweb-text);
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif !important;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif !important;
   font-size:25px;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
@@ -406,7 +379,7 @@ body{
 
 .brand-name{
   color:var(--imweb-pink) !important;
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif !important;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif !important;
   font-size:28px !important;
   font-weight:500 !important;
   letter-spacing:-.8px !important;
@@ -421,7 +394,7 @@ body{
 
 .main-nav a{
   color:#130005 !important;
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif !important;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif !important;
   font-size:18px !important;
   font-weight:700 !important;
   gap:8px !important;
@@ -450,7 +423,7 @@ body{
 
 .hero-kicker{
   color:var(--imweb-pink) !important;
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif !important;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif !important;
   font-size:27px !important;
   line-height:1.6 !important;
   font-weight:700 !important;
@@ -460,7 +433,7 @@ body{
 
 .hero h1{
   color:var(--imweb-pink) !important;
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif !important;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif !important;
   font-size:56px !important;
   line-height:1.32 !important;
   font-weight:800 !important;
@@ -471,7 +444,7 @@ body{
 .hero-copy{
   max-width:730px;
   color:#690018 !important;
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif !important;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif !important;
   font-size:25px !important;
   line-height:1.6 !important;
   font-weight:400 !important;
@@ -490,7 +463,7 @@ body{
   background:transparent !important;
   padding:9px 23px !important;
   border-radius:999px !important;
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif !important;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif !important;
   font-size:17px !important;
   line-height:1.45 !important;
   font-weight:500 !important;
@@ -503,7 +476,7 @@ body{
 .hero-btn{
   min-height:67px !important;
   border-radius:34px !important;
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif !important;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif !important;
   font-size:24px !important;
   line-height:1 !important;
   font-weight:700 !important;
@@ -657,7 +630,7 @@ body{
   max-width:1100px;
   margin:0 auto;
   padding:18px;
-  font-family:Pretendard, "Noto Sans KR", sans-serif;
+  font-family:"Bunny Jalnan", "Noto Sans KR", sans-serif;
 }
 
 .bunny-service-box{
@@ -1044,7 +1017,7 @@ body{
   max-width:1100px;
   margin:0 auto;
   padding:18px;
-  font-family:Pretendard, "Noto Sans KR", sans-serif;
+  font-family:"Bunny Jalnan", "Noto Sans KR", sans-serif;
   color:#684854;
 }
 
@@ -1691,7 +1664,7 @@ body{
   max-width:1100px;
   margin:0 auto;
   padding:18px;
-  font-family:Pretendard, "Noto Sans KR", sans-serif;
+  font-family:"Bunny Jalnan", "Noto Sans KR", sans-serif;
 }
 
 .bunny-contact-box{
@@ -2201,7 +2174,7 @@ body{
   max-width:var(--imweb-width);
   margin:0 auto;
   padding:16px 30px 0;
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif;
   font-size:13px;
 }
 
@@ -2345,7 +2318,7 @@ body.bunny-modal-open{
   border-radius:28px;
   padding:32px;
   box-shadow:0 25px 55px rgba(159,24,69,.25);
-  font-family:"Bunny SangSang","Noto Sans KR",sans-serif;
+  font-family:"Bunny Jalnan","Noto Sans KR",sans-serif;
 }
 
 .bunny-modal-header{

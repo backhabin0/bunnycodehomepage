@@ -49,6 +49,14 @@ const organizationJsonLd = {
 };
 
 const jsonLdBlocks = [websiteJsonLd, organizationJsonLd, ...structuredData];
+
+// 한글 메인 폰트(여기어때 잘난체 고딕)는 public/fonts/의 실제 파일을 그대로 쓴다
+// (woff2 없음, 변환하지 않음). base('/bunnycode/')가 붙어야 하므로 BASE_URL로
+// 경로를 만든다. <style> 태그는 템플릿 표현식을 지원하지 않으므로
+// set:html로 완성된 CSS 문자열을 그대로 주입한다.
+const jalnanOtfUrl = `${baseUrl}fonts/JalnanGothic.otf`;
+const jalnanTtfUrl = `${baseUrl}fonts/JalnanGothicTTF.ttf`;
+const jalnanFontFaceCSS = `@font-face{font-family:"Bunny Jalnan";src:url("${jalnanOtfUrl}") format("opentype"),url("${jalnanTtfUrl}") format("truetype");font-weight:normal;font-style:normal;font-display:swap;}`;
 ---
 
 <!doctype html>
@@ -84,6 +92,11 @@ const jsonLdBlocks = [websiteJsonLd, organizationJsonLd, ...structuredData];
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap"
   />
+
+  <!-- 한글 메인 폰트(여기어때 잘난체 고딕)는 프로젝트 내부 파일(public/fonts/)에서
+       로드한다. Hero에서 즉시 쓰이므로 주 파일(otf) 하나만 preload한다. -->
+  <link rel="preload" href={jalnanOtfUrl} as="font" type="font/otf" crossorigin />
+  <style set:html={jalnanFontFaceCSS}></style>
 
   {jsonLdBlocks.map((block) => (
     <script type="application/ld+json" set:html={JSON.stringify(block)} />
