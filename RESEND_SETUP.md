@@ -36,7 +36,7 @@ DNS 레코드 값은 프로젝트마다(도메인마다) Resend가 다르게 발
 ## 3. 발신 주소(`RESEND_FROM_EMAIL`) 설정
 
 - 반드시 1번에서 인증을 완료한 도메인의 주소만 사용할 수 있습니다.
-- 형식 예: `BunnyCode <inquiry@검증된도메인>`
+- 형식 예: `BaniCode <inquiry@검증된도메인>`
 - 사용자가 입력한 값으로 `from`을 만들지 않습니다 — 코드(`src/pages/api/contact.ts`)는
   항상 이 고정된 환경변수 값만 사용합니다.
 - **TODO: 실제 검증된 도메인이 확정되면 이 값을 `.dev.vars`(로컬) /

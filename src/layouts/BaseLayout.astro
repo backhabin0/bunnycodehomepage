@@ -12,8 +12,8 @@ export interface Props {
 }
 
 const {
-  title = '가성비 홈페이지 제작 | 버니코드',
-  description = '버니코드는 홈페이지 제작, 랜딩페이지, SEO 랜딩페이지, 백엔드 개발, Flutter 앱 제작까지 필요한 만큼 가성비 좋게 맞춤 제작합니다.',
+  title = '가성비 홈페이지 제작 | 바니코드',
+  description = '바니코드는 홈페이지 제작, 랜딩페이지, SEO 랜딩페이지, 백엔드 개발, Flutter 앱 제작까지 필요한 만큼 가성비 좋게 맞춤 제작합니다.',
   path = '',
   structuredData = [],
 } = Astro.props;
@@ -30,8 +30,8 @@ const ogImageURL = new URL(`${baseUrl}assets/hero-bunny.png`, siteOrigin).href;
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: '버니코드',
-  alternateName: 'BunnyCode',
+  name: '바니코드',
+  alternateName: 'BaniCode',
   url: canonicalURL,
   inLanguage: 'ko-KR',
   description,
@@ -40,8 +40,8 @@ const websiteJsonLd = {
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: '버니코드',
-  alternateName: 'BunnyCode',
+  name: '바니코드',
+  alternateName: 'BaniCode',
   url: canonicalURL,
   logo: new URL(`${baseUrl}assets/logo-bunny.png`, siteOrigin).href,
   email: 'backhabin1029@gmail.com',
@@ -50,13 +50,12 @@ const organizationJsonLd = {
 
 const jsonLdBlocks = [websiteJsonLd, organizationJsonLd, ...structuredData];
 
-// 한글 메인 폰트(여기어때 잘난체 고딕)는 public/fonts/의 실제 파일을 그대로 쓴다
-// (woff2 없음, 변환하지 않음). base('/bunnycode/')가 붙어야 하므로 BASE_URL로
-// 경로를 만든다. <style> 태그는 템플릿 표현식을 지원하지 않으므로
-// set:html로 완성된 CSS 문자열을 그대로 주입한다.
-const jalnanOtfUrl = `${baseUrl}fonts/JalnanGothic.otf`;
-const jalnanTtfUrl = `${baseUrl}fonts/JalnanGothicTTF.ttf`;
-const jalnanFontFaceCSS = `@font-face{font-family:"Bunny Jalnan";src:url("${jalnanOtfUrl}") format("opentype"),url("${jalnanTtfUrl}") format("truetype");font-weight:normal;font-style:normal;font-display:swap;}`;
+// 한글 메인 폰트(눈누 기초고딕 Regular, public/fonts/NoonnuBasicGothicRegular.ttf)는
+// public/fonts/의 실제 파일을 그대로 쓴다(ttf 단일 weight, 변환하지 않음).
+// base('/bunnycode/')가 붙어야 하므로 BASE_URL로 경로를 만든다. <style> 태그는
+// 템플릿 표현식을 지원하지 않으므로 set:html로 완성된 CSS 문자열을 그대로 주입한다.
+const baniMainTtfUrl = `${baseUrl}fonts/NoonnuBasicGothicRegular.ttf`;
+const baniMainFontFaceCSS = `@font-face{font-family:"Bani Main";src:url("${baniMainTtfUrl}") format("truetype");font-weight:400;font-style:normal;font-display:swap;}`;
 ---
 
 <!doctype html>
@@ -72,7 +71,7 @@ const jalnanFontFaceCSS = `@font-face{font-family:"Bunny Jalnan";src:url("${jaln
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="버니코드" />
+  <meta property="og:site_name" content="바니코드" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonicalURL} />
@@ -93,10 +92,10 @@ const jalnanFontFaceCSS = `@font-face{font-family:"Bunny Jalnan";src:url("${jaln
     href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap"
   />
 
-  <!-- 한글 메인 폰트(여기어때 잘난체 고딕)는 프로젝트 내부 파일(public/fonts/)에서
-       로드한다. Hero에서 즉시 쓰이므로 주 파일(otf) 하나만 preload한다. -->
-  <link rel="preload" href={jalnanOtfUrl} as="font" type="font/otf" crossorigin />
-  <style set:html={jalnanFontFaceCSS}></style>
+  <!-- 한글 메인 폰트(눈누 기초고딕)는 프로젝트 내부 파일(public/fonts/)에서
+       로드한다. Hero/Header에서 즉시 쓰이므로 preload한다. -->
+  <link rel="preload" href={baniMainTtfUrl} as="font" type="font/ttf" crossorigin />
+  <style set:html={baniMainFontFaceCSS}></style>
 
   {jsonLdBlocks.map((block) => (
     <script type="application/ld+json" set:html={JSON.stringify(block)} />

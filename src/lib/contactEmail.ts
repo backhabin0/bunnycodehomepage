@@ -13,12 +13,12 @@ function formatReceivedAt(date: Date): string {
 export function buildContactEmailSubject(input: ContactEmailInput): string {
   const service = sanitizeHeaderValue(input.service);
   const name = sanitizeHeaderValue(input.name);
-  return `[BunnyCode 문의] ${service} - ${name}`;
+  return `[바니코드 문의] ${service} - ${name}`;
 }
 
 export function buildContactEmailText(input: ContactEmailInput): string {
   return [
-    'BunnyCode 새 문의',
+    '바니코드 새 문의',
     '',
     '이름:',
     input.name,
@@ -75,7 +75,7 @@ export function buildContactEmailHtml(input: ContactEmailInput): string {
     <table role="presentation" width="100%" style="max-width:520px;margin:0 auto;background:#FFFFFF;border-radius:16px;overflow:hidden;border:1px solid #F5CDDA;">
       <tr>
         <td style="background:#F24F87;color:#FFFFFF;padding:20px 24px;font-size:18px;font-weight:800;">
-          BunnyCode 새 문의
+          바니코드 새 문의
         </td>
       </tr>
       <tr>

@@ -13,7 +13,7 @@
 ## 1. 위젯 생성
 
 1. Cloudflare Dashboard → **Turnstile** → **Add widget**
-2. Widget name: 예) `BunnyCode 문의 폼`
+2. Widget name: 예) `BaniCode 문의 폼`
 3. **Domain**에 다음을 등록합니다:
    ```
    hanapage.co.kr

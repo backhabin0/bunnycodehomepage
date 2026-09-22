@@ -1,4 +1,4 @@
-# 버니코드 (BunnyCode) 홈페이지
+# 바니코드 (BaniCode) 홈페이지
 
 기존 정적 `index.html` 원페이지 디자인을 유지한 채, Astro + TypeScript 기반의
 확장 가능한 프로젝트 구조로 전환한 버전입니다.
@@ -139,7 +139,7 @@ Vercel 대시보드 → 해당 프로젝트 → **Settings → Environment Varia
 
 1. Resend 계정 생성 → 발신 도메인 추가 및 DNS 인증(SPF/DKIM) — 자세한 절차는
    [`RESEND_SETUP.md`](./RESEND_SETUP.md) 참고.
-2. 도메인 인증이 끝난 뒤 `RESEND_FROM_EMAIL`을 예: `BunnyCode <inquiry@검증된도메인>` 형태로 설정합니다.
+2. 도메인 인증이 끝난 뒤 `RESEND_FROM_EMAIL`을 예: `BaniCode <inquiry@검증된도메인>` 형태로 설정합니다.
    **TODO: 실제 검증된 발신 도메인이 아직 확정되지 않아 임의로 값을 채우지 않았습니다.**
 3. API Key는 운영 환경에서 가능하면 **Full Access가 아니라 이메일 발송(Sending)에 필요한
    최소 권한**으로 발급하는 것을 권장합니다.

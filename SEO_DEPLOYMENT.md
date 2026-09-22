@@ -1,4 +1,4 @@
-# SEO / 배포 참고 문서 (버니코드, /bunnycode/ 서브패스)
+# SEO / 배포 참고 문서 (바니코드, /bunnycode/ 서브패스)
 
 이 사이트는 도메인 루트가 아니라 `https://hanapage.co.kr/bunnycode/` 하위 경로에서
 운영됩니다. 아래 항목은 실제 배포 시 반드시 확인해야 합니다.
