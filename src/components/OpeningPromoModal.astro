@@ -1,0 +1,176 @@
+---
+// 사이트 첫 방문자에게 보여주는 오픈 이벤트 프로모션 팝업.
+// BaseLayout에서 페이지당 한 번만 렌더링하므로 모든 페이지에서 동일하게 동작한다.
+// "20% 할인 상담받기" 버튼은 ContactModal.astro의 [data-open-contact-modal]
+// 위임 리스너를 그대로 재사용해 새 문의 폼을 만들지 않는다.
+const base = import.meta.env.BASE_URL;
+---
+
+<div class="bunny-promo-overlay" id="bunny-promo-overlay" hidden>
+  <div
+    class="bunny-promo-modal"
+    id="bunny-promo-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bunny-promo-title"
+  >
+    <button type="button" class="bunny-promo-close" id="bunny-promo-close" aria-label="프로모션 팝업 닫기">✕</button>
+
+    <img
+      class="bunny-promo-character"
+      src={`${base}assets/hero-bunny.png`}
+      width="434"
+      height="276"
+      alt=""
+    />
+
+    <p class="bunny-promo-eng">BunnyCode OPEN EVENT</p>
+    <h2 class="bunny-promo-title" id="bunny-promo-title">첫 오픈 특가</h2>
+    <p class="bunny-promo-discount">20% <span>OFF</span></p>
+
+    <p class="bunny-promo-desc">
+      바니코드 오픈을 기념해<br />
+      기존 제작 가격에서 20% 할인해드립니다.<br />
+      필요한 기능부터 부담 없이 상담해보세요.
+    </p>
+
+    <button
+      type="button"
+      class="bunny-btn bunny-btn-price bunny-promo-cta"
+      id="bunny-promo-cta"
+      data-open-contact-modal
+    >
+      20% 할인 상담받기
+    </button>
+
+    <button type="button" class="bunny-promo-dismiss" id="bunny-promo-dismiss">
+      오늘 하루 보지 않기
+    </button>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'banicodePromoHiddenDate';
+  const SHOW_DELAY_MS = 600;
+
+  const overlay = document.getElementById('bunny-promo-overlay');
+  const modal = document.getElementById('bunny-promo-modal');
+  const closeButton = document.getElementById('bunny-promo-close');
+  const ctaButton = document.getElementById('bunny-promo-cta');
+  const dismissButton = document.getElementById('bunny-promo-dismiss');
+
+  if (overlay && modal && closeButton && ctaButton && dismissButton) {
+    let lastFocusedElement = null;
+
+    function todayKey() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    // 프라이빗 모드 등으로 localStorage 접근이 막혀 있어도 사이트 전체가
+    // 깨지면 안 되므로 항상 try/catch로 감싼다. 실패 시에는 "기록 없음"으로
+    // 취급해 팝업을 정상적으로 보여준다.
+    function isHiddenToday() {
+      try {
+        return window.localStorage.getItem(STORAGE_KEY) === todayKey();
+      } catch {
+        return false;
+      }
+    }
+
+    function rememberHiddenToday() {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, todayKey());
+      } catch {
+        // 저장 실패는 무시한다 — "오늘 하루 보지 않기"가 다음 방문에 적용되지 않을 뿐,
+        // 현재 팝업을 닫는 동작 자체는 정상적으로 진행된다.
+      }
+    }
+
+    function getFocusable() {
+      return Array.from(
+        modal.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+    }
+
+    function onKeydown(event) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closePromo();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openPromo() {
+      lastFocusedElement = document.activeElement;
+      overlay.hidden = false;
+      // hidden 해제와 같은 프레임에 바로 클래스를 추가하면 브라우저가 시작 상태를
+      // 건너뛰고 바로 끝 상태로 그려버려 transition이 재생되지 않는다. 두 번의
+      // requestAnimationFrame으로 한 프레임을 확실히 흘려보낸 뒤 전환을 시작한다.
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          overlay.classList.add('bunny-promo-visible');
+        });
+      });
+      // ContactModal과 동일한 클래스를 재사용한다. CTA로 문의 모달을 열 때
+      // 같은 클릭 이벤트 안에서 이 클래스가 제거됐다가 다시 추가되므로
+      // 스크롤 잠금이 중간에 풀리는 화면 튐 없이 그대로 이어진다.
+      document.body.classList.add('bunny-modal-open');
+      window.requestAnimationFrame(() => {
+        ctaButton?.focus();
+      });
+      document.addEventListener('keydown', onKeydown);
+    }
+
+    function closePromo() {
+      overlay.classList.remove('bunny-promo-visible');
+      overlay.hidden = true;
+      document.body.classList.remove('bunny-modal-open');
+      document.removeEventListener('keydown', onKeydown);
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+    }
+
+    closeButton.addEventListener('click', closePromo);
+
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) closePromo();
+    });
+
+    dismissButton.addEventListener('click', () => {
+      rememberHiddenToday();
+      closePromo();
+    });
+
+    // "20% 할인 상담받기": 프로모션만 닫는다(오늘 하루 보지 않기 기록은 남기지
+    // 않는다). 문의 모달을 여는 것은 이 버튼의 data-open-contact-modal 속성을
+    // 통해 ContactModal.astro의 document 위임 리스너가 같은 클릭에서 처리한다.
+    ctaButton.addEventListener('click', () => {
+      closePromo();
+    });
+
+    if (!isHiddenToday()) {
+      window.setTimeout(() => {
+        if (!isHiddenToday()) openPromo();
+      }, SHOW_DELAY_MS);
+    }
+  }
+</script>

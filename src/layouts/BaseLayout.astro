@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import ContactModal from '../components/ContactModal.astro';
+import OpeningPromoModal from '../components/OpeningPromoModal.astro';
 
 export interface Props {
   title?: string;
@@ -31,7 +32,7 @@ const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: '바니코드',
-  alternateName: 'BaniCode',
+  alternateName: 'BunnyCode',
   url: canonicalURL,
   inLanguage: 'ko-KR',
   description,
@@ -41,7 +42,7 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: '바니코드',
-  alternateName: 'BaniCode',
+  alternateName: 'BunnyCode',
   url: canonicalURL,
   logo: new URL(`${baseUrl}assets/logo-bunny.png`, siteOrigin).href,
   email: 'backhabin1029@gmail.com',
@@ -104,5 +105,6 @@ const baniMainFontFaceCSS = `@font-face{font-family:"Bani Main";src:url("${baniM
 <body>
   <slot />
   <ContactModal />
+  <OpeningPromoModal />
 </body>
 </html>

@@ -344,7 +344,9 @@ body{
 .bunny-contact-mini,
 .bunny-seo-label,
 .bunny-weeks,
-.bunny-app-label{
+.bunny-app-label,
+.bunny-promo-eng,
+.bunny-promo-discount{
   font-family:"Anton",sans-serif !important;
   font-weight:400 !important;
   letter-spacing:.7px !important;
@@ -2428,7 +2430,9 @@ body.bunny-modal-open{
 .bunny-form-consent input:focus-visible,
 .hero-btn:focus-visible,
 .bunny-btn:focus-visible,
-.bunny-contact-btn:focus-visible{
+.bunny-contact-btn:focus-visible,
+.bunny-promo-close:focus-visible,
+.bunny-promo-dismiss:focus-visible{
   outline:2px solid #F24F87;
   outline-offset:2px;
 }
@@ -2584,5 +2588,166 @@ body.bunny-modal-open{
 
   .bunny-modal-title{
     font-size:21px;
+  }
+}
+
+/* =========================================================
+   OPENING PROMO MODAL (OpeningPromoModal.astro)
+   사이트 첫 방문자에게 뜨는 오픈 이벤트 팝업. ContactModal과 같은
+   카드 톤(radius, border, shadow, 핑크 팔레트)을 재사용해 광고처럼
+   보이지 않고 기존 컴포넌트처럼 보이게 한다. body scroll lock은
+   ContactModal과 동일한 body.bunny-modal-open 클래스를 공유해서
+   프로모션 → 문의모달 전환 시 화면이 튀지 않는다.
+========================================================= */
+
+.bunny-promo-overlay{
+  position:fixed;
+  inset:0;
+  z-index:1999;
+  background:rgba(103,0,24,.5);
+  backdrop-filter:blur(4px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  opacity:0;
+  transition:opacity .2s ease;
+}
+
+.bunny-promo-overlay[hidden]{
+  display:none;
+}
+
+.bunny-promo-overlay.bunny-promo-visible{
+  opacity:1;
+}
+
+.bunny-promo-modal{
+  position:relative;
+  width:100%;
+  max-width:520px;
+  max-height:calc(100vh - 40px);
+  overflow-y:auto;
+  background:#FFF9FB;
+  border:1px solid #F5CDDA;
+  border-radius:32px;
+  padding:40px 34px 34px;
+  box-shadow:0 25px 55px rgba(159,24,69,.25);
+  text-align:center;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .2s ease, transform .2s ease;
+}
+
+.bunny-promo-overlay.bunny-promo-visible .bunny-promo-modal{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.bunny-promo-close{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#FFE3ED;
+  color:#D54175;
+  font-size:16px;
+  line-height:1;
+}
+
+.bunny-promo-close:hover{
+  background:#F24F87;
+  color:#FFFFFF;
+}
+
+.bunny-promo-character{
+  width:min(100%,150px);
+  height:auto;
+  margin:0 auto 14px;
+  display:block;
+  filter:drop-shadow(0 10px 16px rgba(171,56,96,.12));
+}
+
+.bunny-promo-eng{
+  color:#F24F87;
+  font-size:14px;
+  margin:0 0 10px;
+}
+
+.bunny-promo-title{
+  margin:0 0 6px;
+  color:#A92E59;
+  font-size:28px;
+  line-height:1.3;
+  font-weight:600;
+}
+
+.bunny-promo-discount{
+  margin:4px 0 16px;
+  color:#F13F7A;
+  font-size:clamp(38px,11vw,56px);
+  line-height:1;
+}
+
+.bunny-promo-discount span{
+  font-size:.55em;
+}
+
+.bunny-promo-desc{
+  margin:0 0 26px;
+  color:#684854;
+  font-size:15px;
+  line-height:1.8;
+  font-weight:500;
+}
+
+.bunny-promo-cta{
+  width:100%;
+  justify-content:center;
+}
+
+.bunny-promo-dismiss{
+  display:inline-block;
+  margin-top:16px;
+  padding:8px 4px;
+  color:#96717E;
+  font-size:13px;
+  font-weight:500;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.bunny-promo-dismiss:hover{
+  color:#D54175;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .bunny-promo-overlay,
+  .bunny-promo-modal{
+    transition:none;
+  }
+}
+
+@media(max-width:480px){
+  .bunny-promo-modal{
+    padding:32px 22px 26px;
+    border-radius:26px;
+  }
+
+  .bunny-promo-character{
+    width:min(100%,110px);
+  }
+
+  .bunny-promo-title{
+    font-size:23px;
+  }
+
+  .bunny-promo-desc{
+    font-size:14px;
   }
 }
