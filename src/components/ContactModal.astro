@@ -279,10 +279,14 @@ import { ALLOWED_SERVICES } from '../lib/contactValidation';
           form.reset();
           resetTurnstile();
         } else {
+          // 진단용: API Key, 개인정보, 문의내용 등은 절대 남기지 않고
+          // HTTP status와 서버가 반환한 error code만 콘솔에 남긴다.
+          console.error('contact submit failed:', response.status, (result && result.error) || 'unknown_error');
           setStatus(ERROR_MESSAGE, 'error');
           resetTurnstile();
         }
-      } catch {
+      } catch (err) {
+        console.error('contact submit failed: network/client error', err instanceof Error ? err.message : err);
         setStatus(ERROR_MESSAGE, 'error');
         resetTurnstile();
       } finally {

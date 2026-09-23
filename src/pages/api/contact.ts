@@ -144,6 +144,8 @@ export const POST: APIRoute = async ({ request }) => {
   });
 
   if (!turnstileResult.success) {
+    // siteverify의 error-codes에는 개인정보/secret이 없으므로 진단 목적으로만 남긴다.
+    console.error(`contact api: turnstile verification failed (${(turnstileResult.errorCodes ?? []).join(',') || 'unknown'})`);
     return RESPONSES.turnstileFailed();
   }
 
@@ -152,6 +154,7 @@ export const POST: APIRoute = async ({ request }) => {
   // 고정한다. 로컬 개발이나 BunnyCode 자체 *.vercel.app 직접 접속까지 이
   // 조건을 강제하면 개발 중 테스트가 불가능해진다.
   if (isProduction && turnstileResult.hostname && turnstileResult.hostname !== PRODUCTION_HOSTNAME) {
+    console.error(`contact api: turnstile hostname mismatch (reported=${turnstileResult.hostname})`);
     return RESPONSES.turnstileFailed();
   }
 
