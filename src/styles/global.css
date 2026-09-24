@@ -795,6 +795,15 @@ body{
   border-color:#F1A7C0;
 }
 
+.bunny-service-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 20px;
+}
+.bunny-service-links .bunny-service-more{
+  margin-top:14px;
+}
+
 .bunny-service-more{
   display:inline-block;
   margin-top:14px;
@@ -2232,14 +2241,16 @@ body{
 /* 설명 문단 안의 내부 링크(페이지 간 연결)가 색상만으로 구분되지 않도록
    밑줄 + 강조색을 함께 사용한다 */
 .bunny-process-desc a,
-.bunny-notice a{
+.bunny-notice a,
+.bunny-addon p a{
   color:#D54175;
   font-weight:700;
   text-decoration:underline;
 }
 
 .bunny-process-desc a:hover,
-.bunny-notice a:hover{
+.bunny-notice a:hover,
+.bunny-addon p a:hover{
   color:#A92E59;
 }
 

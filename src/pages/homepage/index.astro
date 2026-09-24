@@ -11,15 +11,20 @@ import { canonicalUrl, internalPath } from '../../lib/url';
 const pageUrl = canonicalUrl('homepage/');
 const homeUrl = canonicalUrl('');
 
-const title = '홈페이지 제작 | 반응형 웹·SEO·맞춤 개발 | 바니코드';
+const title = '홈페이지 제작 | 반응형 웹·맞춤 기능 개발 | 바니코드';
 const description =
-  '기업, 브랜드, 소상공인을 위한 홈페이지 제작. 반응형 웹, 랜딩페이지, SEO 기본 구조와 필요 시 맞춤 기능 개발까지 프로젝트 범위에 맞춰 제작합니다.';
+  '기업, 브랜드, 소상공인을 위한 홈페이지 제작. 반응형 웹 제작을 기본으로, 필요하면 문의폼·예약·회원·관리자·API 연동 같은 기능까지 프로젝트 범위에 맞춰 함께 개발합니다.';
 
 const faqItems = [
   {
     question: '홈페이지 제작 기간은 얼마나 걸리나요?',
     answer:
       '페이지 수, 디자인 범위, 추가 기능 여부에 따라 달라집니다. 정확한 일정은 상담 시 요구사항을 확인한 뒤 안내해드립니다.',
+  },
+  {
+    question: '홈페이지 제작 비용은 무엇 때문에 달라지나요?',
+    answer:
+      '페이지 수, 디자인 범위, 콘텐츠(사진·텍스트) 준비 여부, 문의폼·회원·예약·결제 같은 추가 기능, 외부 API 연동 여부에 따라 달라집니다. 비용을 합리적으로 설계하는 방법은 가성비 홈페이지 제작 페이지에서 더 자세히 안내합니다.',
   },
   {
     question: '모바일 홈페이지도 같이 제작되나요?',
@@ -45,6 +50,11 @@ const faqItems = [
   {
     question: '백엔드 기능을 추가할 수 있나요?',
     answer: '네. 회원가입, 예약, 문의 접수 등 서버가 필요한 기능은 프로젝트 범위에 맞춰 별도로 개발해 연결할 수 있습니다.',
+  },
+  {
+    question: '관리자 기능은 처음부터 필요한가요?',
+    answer:
+      '아닙니다. 콘텐츠나 신청 내역이 많지 않다면 처음에는 필요하지 않은 경우가 많습니다. 방문자가 늘어나거나 직접 관리해야 할 콘텐츠·신청 내역이 생기는 시점에 추가하는 방식을 권장합니다.',
   },
 ];
 
@@ -81,12 +91,12 @@ const structuredData = [
   <main>
     <PageHero kicker="HOMEPAGE" chips={['반응형 웹', 'SEO 기본 구조', '랜딩페이지 연계', '맞춤 기능 개발']}>
       <h1 slot="heading">
-        사업에 맞는 홈페이지,<br />
-        필요한 기능만 제대로 만듭니다
+        홈페이지 제작,<br />
+        사업에 필요한 기능만 제대로 만듭니다
       </h1>
-      가입 폼이나 결제 기능이 필요 없다면 굳이 넣지 않고, 예약이나 회원 기능이 필요하다면
-      백엔드까지 연결합니다. 회사·브랜드 소개부터 캠페인용 랜딩페이지까지, 목적에 맞는
-      구조로 홈페이지를 제작합니다.
+      바니코드는 기업, 브랜드, 소상공인을 위한 반응형 홈페이지를 제작합니다. 회사·브랜드
+      소개 중심의 기본형부터 시작해, 필요한 경우 문의폼, 예약, 회원, 관리자 기능, API·백엔드
+      연동까지 프로젝트 범위에 맞춰 함께 개발합니다.
     </PageHero>
 
     <section class="page-band alt section-anchor" id="homepage-detail">
@@ -114,7 +124,10 @@ const structuredData = [
             </div>
             <div class="bunny-addon">
               <strong>소상공인 홈페이지</strong>
-              <p>매장 정보, 서비스 안내, 문의·예약 연결에 집중한 실용적인 홈페이지.</p>
+              <p>
+                매장 정보, 서비스 안내, 문의·예약 연결에 집중한 실용적인 홈페이지.
+                <a href={internalPath('small-business-homepage/')}>소상공인 홈페이지 제작 알아보기 →</a>
+              </p>
             </div>
             <div class="bunny-addon">
               <strong>서비스 소개 사이트</strong>
@@ -279,8 +292,8 @@ const structuredData = [
                 <span>이미지 크기와 로딩 방식을 조정해 불필요한 로딩 지연을 줄입니다.</span>
               </div>
               <div class="bunny-seo-point">
-                <strong>필요 시 백엔드 연동</strong>
-                <span>회원, 예약, 문의 접수 등 서버 기능이 필요하면 별도로 연결합니다.</span>
+                <strong>문의폼 · 필요 시 백엔드 연동</strong>
+                <span>문의폼은 기본으로 넣을 수 있고, 회원·예약·결제처럼 서버가 필요한 기능은 별도로 연결합니다.</span>
               </div>
             </div>
           </div>
