@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import ContactModal from '../components/ContactModal.astro';
 import OpeningPromoModal from '../components/OpeningPromoModal.astro';
+import { canonicalUrl } from '../lib/url';
 
 export interface Props {
   title?: string;
@@ -19,11 +20,13 @@ const {
   structuredData = [],
 } = Astro.props;
 
-// site: https://hanapage.co.kr, base: /bunnycode
-// -> canonical: https://hanapage.co.kr/bunnycode/
+// site: https://hanapage.co.kr, base: /bunnycode/
+// Hanapage external rewrite가 trailing slash를 없앤 최종 200 URL로 정규화하므로
+// (예: /bunnycode/homepage/ -> 308 -> /bunnycode/homepage), canonical도 그
+// 최종 URL과 정확히 일치시킨다 (src/lib/url.ts 참고).
 const siteOrigin = import.meta.env.SITE ?? 'https://hanapage.co.kr';
 const baseUrl = import.meta.env.BASE_URL; // '/bunnycode/'
-const canonicalURL = new URL(path, `${siteOrigin}${baseUrl}`).href;
+const canonicalURL = canonicalUrl(path);
 const ogImageURL = new URL(`${baseUrl}assets/hero-bunny.png`, siteOrigin).href;
 
 // TODO: 실제 사업자 정보(주소/대표자/사업자등록번호 등)가 확정되면

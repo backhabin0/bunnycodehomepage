@@ -1,4 +1,5 @@
 ---
+import { internalPath } from '../lib/url';
 const base = import.meta.env.BASE_URL;
 ---
 
@@ -52,6 +53,8 @@ const base = import.meta.env.BASE_URL;
             <span>예약 / 신청</span>
             <span>결제 연동</span>
           </div>
+
+          <a class="bunny-service-more" href={internalPath('web-development/')}>홈페이지 개발 서비스 자세히 보기 →</a>
         </article>
 
         <!-- 02 홈페이지 전체 제작 -->
@@ -82,7 +85,7 @@ const base = import.meta.env.BASE_URL;
             <span>API</span>
           </div>
 
-          <a class="bunny-service-more" href={`${base}homepage/`}>홈페이지 제작 서비스 자세히 보기 →</a>
+          <a class="bunny-service-more" href={internalPath('homepage/')}>홈페이지 제작 서비스 자세히 보기 →</a>
         </article>
 
         <!-- 03 SEO 랜딩페이지 -->
@@ -115,6 +118,8 @@ const base = import.meta.env.BASE_URL;
             <span>반응형</span>
             <span>다중 페이지</span>
           </div>
+
+          <a class="bunny-service-more" href={internalPath('landing-page/')}>랜딩페이지 제작 서비스 자세히 보기 →</a>
         </article>
 
         <!-- 04 Flutter 앱 제작 -->
@@ -145,6 +150,8 @@ const base = import.meta.env.BASE_URL;
             <span>Firebase</span>
             <span>Supabase</span>
           </div>
+
+          <a class="bunny-service-more" href={internalPath('app-development/')}>앱 개발 서비스 자세히 보기 →</a>
         </article>
       </div>
 
@@ -228,7 +235,7 @@ const base = import.meta.env.BASE_URL;
           <a class="bunny-btn bunny-btn-kakao" href="https://open.kakao.com/o/gfMcjbOi" target="_blank" rel="noopener">💬 카카오톡 상담</a>
         </div>
 
-        <a class="bunny-service-more" href={`${base}affordable-homepage/`}>가성비 홈페이지 제작 방식 알아보기 →</a>
+        <a class="bunny-service-more" href={internalPath('affordable-homepage/')}>가성비 홈페이지 제작 방식 알아보기 →</a>
       </div>
 
     </div>

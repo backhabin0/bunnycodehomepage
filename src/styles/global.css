@@ -260,8 +260,25 @@ textarea{
   color:#9e6078;
   font-size:12px;
   display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.footer-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 22px;
+}
+.footer-links a{
+  color:#a92e59;
+  font-weight:600;
+}
+.footer-links a:hover{
+  color:#f13f7a;
+}
+.footer-meta{
+  display:flex;
   justify-content:space-between;
-  gap:20px;
+  gap:8px 20px;
   flex-wrap:wrap;
 }
 @media(max-width:900px){
@@ -2734,20 +2751,38 @@ body.bunny-modal-open{
 }
 
 @media(max-width:480px){
+  /* Google의 intrusive interstitial 가이드 대응: 모바일에서는 화면을 거의
+     덮는 중앙 dialog 대신, 상단 콘텐츠 일부가 항상 보이는 bottom sheet 형태로
+     보여준다. 기능(20% 할인 CTA, 오늘 하루 보지 않기, 문의 연결)은 그대로 유지. */
+  .bunny-promo-overlay{
+    align-items:flex-end;
+    padding:0;
+    background:rgba(103,0,24,.35);
+  }
+
   .bunny-promo-modal{
-    padding:32px 22px 26px;
-    border-radius:26px;
+    max-width:100%;
+    max-height:min(72vh,560px);
+    border-radius:26px 26px 0 0;
+    padding:28px 22px 24px;
+    transform:translateY(16px);
   }
 
   .bunny-promo-character{
-    width:min(100%,110px);
+    width:min(100%,90px);
+    margin-bottom:8px;
   }
 
   .bunny-promo-title{
-    font-size:23px;
+    font-size:22px;
+  }
+
+  .bunny-promo-discount{
+    margin:2px 0 12px;
   }
 
   .bunny-promo-desc{
     font-size:14px;
+    margin-bottom:18px;
   }
 }

@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import { breadcrumbJsonLd, faqJsonLd } from '../../lib/structuredData';
+import { canonicalUrl, internalPath } from '../../lib/url';
+
+const pageUrl = canonicalUrl('web-development/');
+const homeUrl = canonicalUrl('');
+
+const title = '홈페이지 개발 | 백엔드·API·맞춤 기능 개발 | 바니코드';
+const description =
+  '디자인이 이미 있거나 확정된 홈페이지에 회원, 예약, 결제, 관리자 기능 같은 실제 동작하는 기능을 개발해 연결합니다. DB 설계부터 API 연동까지 필요한 기능만 구현합니다.';
+
+const faqItems = [
+  {
+    question: '홈페이지 제작과 홈페이지 개발은 무엇이 다른가요?',
+    answer:
+      '홈페이지 제작은 디자인과 화면 구성을 포함한 전체 제작을 의미하고, 홈페이지 개발은 이미 있는 화면이나 확정된 디자인에 회원, 예약, 결제, 데이터 처리 같은 실제 기능을 구현해 연결하는 작업입니다. 화면만 필요하다면 홈페이지 제작을, 기능이 중심이라면 이 페이지의 개발 서비스를 확인하시면 됩니다.',
+  },
+  {
+    question: '디자인이 없어도 개발만 맡길 수 있나요?',
+    answer: '네. 디자인 시안이나 기존 프론트엔드가 준비되어 있다면, 그 화면에 필요한 서버 기능만 개발해 연결할 수 있습니다.',
+  },
+  {
+    question: '기존에 운영 중인 사이트에 기능을 추가할 수도 있나요?',
+    answer: '네. 현재 구조와 소스를 먼저 확인한 뒤, 기존 코드를 최대한 유지하면서 필요한 기능만 추가로 개발합니다.',
+  },
+  {
+    question: '어떤 데이터베이스를 사용하나요?',
+    answer: '프로젝트 요구사항에 맞춰 Supabase, Firebase 등 실제 서비스에 적합한 데이터베이스를 선택해 구축합니다.',
+  },
+  {
+    question: '외부 서비스(API) 연동도 가능한가요?',
+    answer: '네. 결제, 지도, 알림, 로그인 등 필요한 외부 API를 확인한 뒤 연동 가능 여부와 범위를 안내해드립니다.',
+  },
+  {
+    question: '관리자 페이지도 함께 만들 수 있나요?',
+    answer: '네. 콘텐츠나 신청 내역을 직접 관리해야 한다면, 필요한 항목만 다루는 관리자 기능을 별도로 개발합니다.',
+  },
+  {
+    question: '유지보수도 계속 맡길 수 있나요?',
+    answer: '기능 추가나 수정이 필요할 때마다 별도로 문의해 진행할 수 있습니다. 정기 유지보수 계약 형태는 상담을 통해 협의합니다.',
+  },
+];
+
+const structuredData = [
+  breadcrumbJsonLd([
+    { name: '홈', url: homeUrl },
+    { name: '홈페이지 개발', url: pageUrl },
+  ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url: pageUrl,
+    inLanguage: 'ko-KR',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: '홈페이지 개발',
+    provider: { '@type': 'Organization', name: '바니코드' },
+    areaServed: 'KR',
+    description,
+    url: pageUrl,
+  },
+  faqJsonLd(faqItems.map((item) => ({ question: item.question, answer: item.answer }))),
+];
+---
+
+<BaseLayout title={title} description={description} path="web-development/" structuredData={structuredData}>
+  <Header />
+  <Breadcrumb items={[{ label: '홈', href: internalPath('') }, { label: '홈페이지 개발' }]} />
+
+  <main>
+    <PageHero kicker="WEB DEVELOPMENT" chips={['백엔드 개발', 'DB 설계', 'API 연동', '관리자 기능']}>
+      <h1 slot="heading">
+        기능까지 제대로 만드는,<br />
+        홈페이지 개발
+      </h1>
+      화면 디자인만으로는 해결되지 않는 부분이 있습니다. 회원가입, 예약, 결제, 데이터 저장처럼
+      실제로 동작해야 하는 기능은 서버와 데이터베이스가 필요합니다. 바니코드는 이런 기능을
+      설계하고 구현해 기존 화면이나 새 홈페이지에 연결합니다.
+    </PageHero>
+
+    <section class="page-band alt section-anchor" id="web-development-detail">
+      <div class="bunny-process-wrap">
+        <div class="bunny-process-box">
+
+          <!-- 1. Answer-first: 제작 vs 개발 -->
+          <div class="bunny-section-head">
+            <p class="bunny-process-label">MADE VS BUILT</p>
+            <h2 class="bunny-process-title">홈페이지 제작과 홈페이지 개발은 무엇이 다른가요?</h2>
+            <p class="bunny-process-desc">
+              홈페이지 제작은 디자인과 레이아웃처럼 <strong>보이는 화면</strong>을 만드는
+              작업이고, 홈페이지 개발은 회원 로그인, 예약 접수, 결제 처리처럼
+              <strong>화면 뒤에서 실제로 동작해야 하는 기능</strong>을 구현하는 작업입니다.
+              둘 다 필요하면 처음부터 함께 진행하고, 화면이 이미 있다면 개발만 별도로
+              진행할 수 있습니다.
+            </p>
+          </div>
+
+          <div class="bunny-website-grid">
+            <div class="bunny-option-card bunny-option-custom">
+              <div class="bunny-option-badge">FRONT-END</div>
+              <h3>홈페이지 제작</h3>
+              <p class="bunny-option-eng">DESIGN + LAYOUT</p>
+              <p>화면 구성, 디자인, 반응형 레이아웃 등 방문자가 눈으로 보는 부분을 만듭니다.</p>
+              <div class="bunny-mini-flow">
+                <div>기획 · 디자인</div>
+                <div>화면 구현 · 반응형</div>
+                <div>SEO 기본 설정</div>
+              </div>
+              <div class="bunny-recommend">
+                <strong>이런 경우 추천해요 ♡</strong>
+                <span>
+                  새로운 홈페이지가 아직 없는 경우<br />
+                  화면부터 새로 만들어야 하는 경우
+                </span>
+              </div>
+            </div>
+
+            <div class="bunny-option-card bunny-option-ai">
+              <div class="bunny-option-badge">♡ BACK-END</div>
+              <h3>홈페이지 개발</h3>
+              <p class="bunny-option-eng">FEATURE + SERVER</p>
+              <p>회원, 예약, 결제, 데이터 처리 등 실제로 동작해야 하는 기능을 구현합니다.</p>
+              <div class="bunny-mini-flow">
+                <div>기능 정의 · DB 설계</div>
+                <div>서버 · API 개발</div>
+                <div>기존 화면에 연결</div>
+              </div>
+              <div class="bunny-recommend">
+                <strong>이런 경우 추천해요 ♡</strong>
+                <span>
+                  화면이나 디자인은 이미 있는 경우<br />
+                  기능만 추가로 필요한 경우
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bunny-divider"></div>
+
+          <!-- 2. 어떤 기능을 개발할 수 있는지 -->
+          <div class="bunny-section">
+            <div class="bunny-section-head">
+              <p class="bunny-process-label">WHAT WE DEVELOP</p>
+              <h2 class="bunny-process-title">이런 기능을 개발합니다</h2>
+              <p class="bunny-process-desc">
+                실제 바니코드가 구현하는 기능 범위입니다. 목록에 없는 기능이 필요하다면
+                가능 여부를 먼저 확인해드립니다.
+              </p>
+            </div>
+
+            <div class="bunny-seo-points">
+              <div class="bunny-seo-point">
+                <strong>로그인 / 회원</strong>
+                <span>이메일, 소셜 로그인 등 회원가입과 인증 기능을 구현합니다.</span>
+              </div>
+              <div class="bunny-seo-point">
+                <strong>예약 / 신청</strong>
+                <span>날짜·시간 기반 예약, 신청 접수와 관리 기능을 개발합니다.</span>
+              </div>
+              <div class="bunny-seo-point">
+                <strong>결제 연동</strong>
+                <span>결제 서비스 연동이 필요한 경우 결제 흐름과 처리 로직을 구현합니다.</span>
+              </div>
+              <div class="bunny-seo-point">
+                <strong>DB 설계 / 구축</strong>
+                <span>서비스 구조에 맞는 데이터베이스를 설계하고 구축합니다.</span>
+              </div>
+              <div class="bunny-seo-point">
+                <strong>API 연동</strong>
+                <span>지도, 알림, 외부 서비스 등 필요한 API를 확인하고 연동합니다.</span>
+              </div>
+              <div class="bunny-seo-point">
+                <strong>관리자 기능</strong>
+                <span>콘텐츠, 신청 내역, 회원 정보를 직접 관리할 수 있는 관리자 페이지를 만듭니다.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bunny-divider"></div>
+
+          <!-- 3. 개발 순서 -->
+          <div class="bunny-section">
+            <div class="bunny-section-head">
+              <p class="bunny-process-label">HOW IT'S BUILT</p>
+              <h2 class="bunny-process-title">기존 화면에 기능을 연결하는 순서</h2>
+              <p class="bunny-process-desc">
+                이미 화면이 있는 프로젝트를 기준으로 한 진행 순서입니다. 화면 제작부터 함께
+                진행하는 경우 <a href={internalPath('homepage/')}>홈페이지 제작 서비스</a>의
+                제작 과정과 결합해 진행합니다.
+              </p>
+            </div>
+
+            <div class="bunny-flow-auto">
+              <div class="bunny-common-step">
+                <div class="bunny-common-num">01</div>
+                <strong>프로젝트 확인</strong>
+                <span>현재 화면과 소스 구조를 확인합니다.</span>
+              </div>
+              <div class="bunny-common-step">
+                <div class="bunny-common-num">02</div>
+                <strong>기능 정의</strong>
+                <span>필요한 기능과 데이터 구조를 정리합니다.</span>
+              </div>
+              <div class="bunny-common-step">
+                <div class="bunny-common-num">03</div>
+                <strong>DB / API 설계</strong>
+                <span>데이터베이스와 서버 구조를 설계합니다.</span>
+              </div>
+              <div class="bunny-common-step">
+                <div class="bunny-common-num">04</div>
+                <strong>개발</strong>
+                <span>서버 기능과 관리자 화면을 구현합니다.</span>
+              </div>
+              <div class="bunny-common-step">
+                <div class="bunny-common-num">05</div>
+                <strong>연결</strong>
+                <span>기존 화면과 새 기능을 연결합니다.</span>
+              </div>
+              <div class="bunny-common-step">
+                <div class="bunny-common-num">06</div>
+                <strong>테스트 · 전달</strong>
+                <span>실제 데이터로 기능을 확인한 뒤 전달합니다.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bunny-divider"></div>
+
+          <!-- 4. FAQ -->
+          <div class="bunny-section">
+            <div class="bunny-section-head">
+              <p class="bunny-process-label">FAQ</p>
+              <h2 class="bunny-process-title">자주 묻는 질문</h2>
+              <p class="bunny-process-desc">
+                정확한 개발 범위와 비용은 현재 구조와 필요한 기능을 확인한 뒤 안내해드립니다.
+              </p>
+            </div>
+
+            <Faq items={faqItems} />
+          </div>
+
+          <!-- FINAL CTA -->
+          <div class="bunny-final">
+            <p class="heart">♡ LET'S MAKE IT ♡</p>
+            <h3>어떤 기능이 필요한지부터 정리해드릴게요.</h3>
+            <p>
+              지금 화면 상태와 필요한 기능을 알려주세요.<br />
+              개발 범위와 진행 방식을 안내해드립니다.
+            </p>
+            <div class="bunny-buttons">
+              <button type="button" class="bunny-btn bunny-btn-price" data-open-contact-modal>✉ 가격 문의하기</button>
+              <a class="bunny-btn bunny-btn-kakao" href="https://open.kakao.com/o/gfMcjbOi" target="_blank" rel="noopener">💬 카카오톡 상담</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

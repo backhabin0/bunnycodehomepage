@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   https://hanapage.co.kr/bunnycode/sitemap.xml 로 서비스될 사이트맵.
+
+  URL은 리다이렉트 전 주소가 아니라 실제 최종 200 응답 URL을 그대로 사용한다.
+  Hanapage(Next.js) external rewrite가 trailingSlash:false 기본값으로
+  /bunnycode/... 요청을 슬래시 없는 형태로 308 리다이렉트하므로(실측 확인 완료),
+  아래 <loc>에는 트레일링 슬래시를 붙이지 않는다. src/lib/url.ts의
+  canonicalUrl()이 페이지 canonical/OG/JSON-LD에도 동일한 규칙을 적용한다.
+
   서비스별 SEO 랜딩페이지가 /bunnycode/xxx 형태로 추가될 때마다
   이 파일에 <url> 항목을 추가한다.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://hanapage.co.kr/bunnycode/</loc>
+    <loc>https://hanapage.co.kr/bunnycode</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://hanapage.co.kr/bunnycode/homepage/</loc>
+    <loc>https://hanapage.co.kr/bunnycode/homepage</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://hanapage.co.kr/bunnycode/affordable-homepage/</loc>
+    <loc>https://hanapage.co.kr/bunnycode/affordable-homepage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hanapage.co.kr/bunnycode/web-development</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hanapage.co.kr/bunnycode/landing-page</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hanapage.co.kr/bunnycode/app-development</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

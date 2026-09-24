@@ -1,20 +1,25 @@
 ---
+import { internalPath } from '../lib/url';
 const base = import.meta.env.BASE_URL;
+// 메인 페이지의 섹션 앵커(#home 등)는 서비스 상세 페이지(/homepage 등)에는
+// 존재하지 않으므로, 항상 메인 페이지 경로를 앞에 붙여 어느 페이지에서
+// 클릭해도 메인 페이지의 해당 섹션으로 이동하도록 한다.
+const homeHref = internalPath('');
 ---
 
 <header class="site-header">
   <div class="site-header-inner">
-    <a class="brand" href="#home">
+    <a class="brand" href={homeHref}>
       <img src={`${base}assets/logo-bunny.png`} width="79" height="83" alt="바니코드 로고" />
       <span class="brand-name">바니코드</span>
     </a>
 
     <nav class="main-nav" aria-label="주요 메뉴">
-      <a href="#home"><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />홈</a>
-      <a href="#service"><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />서비스</a>
-      <a href="#portfolio"><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />포트폴리오</a>
-      <a href="#process"><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />진행방식</a>
-      <a href="#contact"><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />문의</a>
+      <a href={`${homeHref}#home`}><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />홈</a>
+      <a href={`${homeHref}#service`}><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />서비스</a>
+      <a href={`${homeHref}#portfolio`}><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />포트폴리오</a>
+      <a href={`${homeHref}#process`}><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />진행방식</a>
+      <a href={`${homeHref}#contact`}><img src={`${base}assets/menu-bunny.png`} width="96" height="96" alt="" />문의</a>
     </nav>
   </div>
 </header>

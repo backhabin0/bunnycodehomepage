@@ -1,7 +1,19 @@
 ---
+import { internalPath } from '../lib/url';
 ---
 
 <footer class="footer">
-  <div>바니코드 · 작은 아이디어도 멋진 웹으로</div>
-  <div>© BunnyCode. All rights reserved.</div>
+  <nav class="footer-links" aria-label="서비스 바로가기">
+    <a href={internalPath('homepage/')}>홈페이지 제작</a>
+    <a href={internalPath('affordable-homepage/')}>가성비 홈페이지 제작</a>
+    <a href={internalPath('web-development/')}>홈페이지 개발</a>
+    <a href={internalPath('landing-page/')}>랜딩페이지 제작</a>
+    <a href={internalPath('app-development/')}>앱 개발</a>
+    <a href={`${internalPath('')}#contact`}>문의</a>
+  </nav>
+  <div class="footer-meta">
+    <div>바니코드 · 작은 아이디어도 멋진 웹으로</div>
+    <div>문의: backhabin1029@gmail.com</div>
+    <div>© BunnyCode. All rights reserved.</div>
+  </div>
 </footer>

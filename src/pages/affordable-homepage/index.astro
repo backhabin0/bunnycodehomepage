@@ -6,11 +6,10 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import { breadcrumbJsonLd, faqJsonLd } from '../../lib/structuredData';
+import { canonicalUrl, internalPath } from '../../lib/url';
 
-const base = import.meta.env.BASE_URL; // '/bunnycode/'
-const siteOrigin = import.meta.env.SITE ?? 'https://hanapage.co.kr';
-const pageUrl = new URL('affordable-homepage/', `${siteOrigin}${base}`).href;
-const homeUrl = new URL('', `${siteOrigin}${base}`).href;
+const pageUrl = canonicalUrl('affordable-homepage/');
+const homeUrl = canonicalUrl('');
 
 const title = '가성비 홈페이지 제작 | 필요한 기능부터 합리적으로 | 바니코드';
 const description =
@@ -74,7 +73,7 @@ const structuredData = [
 
 <BaseLayout title={title} description={description} path="affordable-homepage/" structuredData={structuredData}>
   <Header />
-  <Breadcrumb items={[{ label: '홈', href: `${base}` }, { label: '가성비 홈페이지 제작' }]} />
+  <Breadcrumb items={[{ label: '홈', href: internalPath('') }, { label: '가성비 홈페이지 제작' }]} />
 
   <main>
     <PageHero kicker="AFFORDABLE HOMEPAGE" chips={['핵심 기능 우선', '단계적 확장', '합리적인 범위 설계', '재사용 가능한 구조']}>
@@ -279,8 +278,9 @@ const structuredData = [
 
             <p class="bunny-notice">
               ※ 위 구성은 예시이며, 실제 제작 범위와 비용은 상담을 통해 확정됩니다. 더 많은
-              페이지와 기능이 필요한 프로젝트라면
-              <a href={`${base}homepage/`}>홈페이지 제작 서비스</a>에서 전체 범위를 확인해보세요.
+              페이지와 기능이 필요한 프로젝트라면 <a href={internalPath('homepage/')}>홈페이지 제작 서비스</a>에서,
+              한 페이지로 목표를 전달하는 구조가 더 맞다면
+              <a href={internalPath('landing-page/')}>랜딩페이지 제작</a>에서 차이를 확인해보세요.
             </p>
           </div>
 
